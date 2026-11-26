@@ -1,22 +1,25 @@
-MI PROGRESO - aplicación web instalable (PWA)
+MI PROGRESO 2.0 — EDICIÓN CON IDENTIDAD PERSONAL
 
-CONTENIDO
-- index.html: interfaz
-- app.js: lógica y almacenamiento local
-- manifest.webmanifest: configuración PWA
-- sw.js: caché para uso offline después de la primera visita
-- icons/: iconos
+Esta actualización incluye:
+- Registro de alimentos por gramos y estimación de calorías, proteínas, carbohidratos y grasas.
+- Resumen diario de macros y estadísticas de los últimos 7 días.
+- Registro de entrenamientos, series, repeticiones y cargas.
+- Gráficas de peso y cintura, historial y calendario.
+- Recordatorios configurables (la página debe permanecer activa; no se garantiza entrega con la app cerrada).
+- Nueva identidad visual basada en la ilustración elegida: iconos 192/512 y banner de bienvenida.
+- Conserva la clave local miProgresoDataV1 para mantener los datos de la versión anterior.
 
-PUBLICAR GRATIS CON GITHUB PAGES
-1. Descomprime este ZIP.
-2. Crea un repositorio nuevo en GitHub.
-3. Sube TODOS los archivos y la carpeta icons (index.html debe quedar en la raíz).
-4. En Settings > Pages, elige Deploy from a branch, branch main y folder /(root), y guarda.
-5. Espera la URL publicada.
-6. En tu iPhone abre esa URL con Safari > Compartir > Añadir a pantalla de inicio.
+ACTUALIZAR TU SITIO EN GITHUB PAGES
+1. Antes de reemplazar nada, abre tu versión actual y ve a Historial > Exportar copia JSON.
+2. Descomprime este ZIP.
+3. En GitHub, abre el repositorio mi-progreso y reemplaza index.html, app.js, sw.js, manifest.webmanifest y README.txt.
+4. En la carpeta icons, reemplaza icon-192.png e icon-512.png y agrega mi-progreso-brand.png. Conserva las rutas y nombres exactos.
+5. Confirma los cambios con Commit changes. GitHub Pages publicará la actualización en la misma dirección.
+6. En el iPhone, cierra y vuelve a abrir la app. Si aparece la versión anterior, abre el sitio en Safari y recarga. Puede ser necesario quitar el acceso anterior de la pantalla de inicio y volver a añadirlo para refrescar el icono.
 
 IMPORTANTE
-- El almacenamiento usa localStorage del navegador en ese dispositivo. No sincroniza entre dispositivos.
-- Exporta periódicamente el respaldo JSON desde Historial.
-- Para que la instalación PWA y el modo offline funcionen, publica en HTTPS. El service worker requiere HTTPS (o localhost).
-- Esta app es un organizador personal, no sustituye evaluación médica ni calcula automáticamente nutrientes de alimentos.
+- Los registros se guardan en localStorage de ese navegador/dispositivo; no se sincronizan entre dispositivos.
+- La clave de almacenamiento se mantiene para conservar registros anteriores. Haz igualmente una copia de seguridad antes de actualizar.
+- Los nutrientes son estimaciones promedio y pueden variar por marca, corte y preparación.
+- Los recordatorios requieren que la página permanezca activa; el navegador puede suspenderlos.
+- La aplicación es una herramienta de seguimiento y no sustituye consejo médico o nutricional.
