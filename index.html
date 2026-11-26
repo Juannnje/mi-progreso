@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#100d18">
+<meta name="description" content="Tu panel personal de alimentación, actividad física y progreso.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<title>MI PROGRESO</title>
+<style>
+:root{--bg:#0c0a11;--panel:#171321;--panel2:#211a30;--purple:#9b5cff;--pink:#c084fc;--text:#f7f3ff;--muted:#aaa0b9;--line:#332842;--green:#55d6a0}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#211333 0,#0c0a11 48%);color:var(--text);font:15px system-ui,-apple-system,Segoe UI,sans-serif;padding-bottom:90px}
+header{padding:24px 18px 15px;max-width:900px;margin:auto} .brand{display:flex;align-items:center;gap:12px}.logo{width:44px;height:44px;border-radius:14px;background:linear-gradient(135deg,#a855f7,#5b21b6);display:grid;place-items:center;font-weight:900;font-size:20px;box-shadow:0 8px 30px #8b5cf655}
+h1{font-size:23px;letter-spacing:1.4px;margin:0}header p{margin:5px 0 0;color:var(--muted);font-size:12px;letter-spacing:1px}
+main{max-width:900px;margin:auto;padding:0 14px}.tabs{position:fixed;bottom:0;left:0;right:0;background:#100d18ee;backdrop-filter:blur(16px);border-top:1px solid var(--line);display:flex;justify-content:space-around;padding:9px 4px calc(9px + env(safe-area-inset-bottom));z-index:5}
+.tabs button{background:none;border:0;color:var(--muted);font-size:10px;display:grid;gap:4px;justify-items:center;padding:4px}.tabs button b{font-size:19px}.tabs button.active{color:var(--pink)}
+section{display:none}section.active{display:block}.card{background:linear-gradient(145deg,#1c1727,#14111c);border:1px solid var(--line);border-radius:18px;padding:16px;margin:12px 0;box-shadow:0 12px 35px #0003}
+.row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}.between{justify-content:space-between}.muted{color:var(--muted)}.small{font-size:12px}.big{font-size:31px;font-weight:800;letter-spacing:-1px}.purple{color:var(--pink)}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.metric{background:#211a30;border-radius:14px;padding:13px}.metric strong{display:block;font-size:21px;margin-top:5px}
+.progress{height:10px;border-radius:20px;background:#342844;overflow:hidden;margin:10px 0}.progress span{display:block;height:100%;background:linear-gradient(90deg,#7c3aed,#d8b4fe);border-radius:20px}
+h2{font-size:18px;margin:6px 0 12px}h3{font-size:14px;margin:0 0 8px;color:#e9ddff}
+label{display:block;color:var(--muted);font-size:12px;margin:10px 0 5px}input,select,textarea{width:100%;background:#0e0b15;border:1px solid #403151;color:var(--text);padding:12px;border-radius:11px;font:inherit}textarea{min-height:70px}
+button.primary{background:linear-gradient(100deg,#7c3aed,#a855f7);border:0;color:white;padding:12px 16px;border-radius:12px;font-weight:700;width:100%;margin-top:12px}button.secondary{background:#292039;color:#eee;border:1px solid #49365e;padding:10px 12px;border-radius:10px}
+.formgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.list{display:grid;gap:8px}.entry{padding:11px;background:#211a30;border-radius:12px;border:1px solid #352844}.entry strong{display:block}.pill{font-size:11px;color:#d9c3ff;background:#38244f;padding:4px 8px;border-radius:30px}
+canvas{width:100%;height:190px;background:#100d18;border-radius:12px}
+.checks{display:grid;grid-template-columns:1fr 1fr;gap:8px}.checks label{margin:0;background:#211a30;padding:10px;border-radius:10px;color:var(--text)}
+hr{border:0;border-top:1px solid var(--line);margin:14px 0}.notice{font-size:12px;color:var(--muted);line-height:1.5}
+@media(min-width:700px){.grid{grid-template-columns:repeat(4,1fr)}}
+</style>
+</head>
+<body>
+<header><div class="brand"><div class="logo">MP</div><div><h1>MI PROGRESO</h1><p>DISCIPLINA · SALUD · CONSTANCIA</p></div></div></header>
+<main>
+<section id="inicio" class="active">
+ <div class="card">
+  <div class="row between"><span class="muted small">TU OBJETIVO DE PESO</span><span class="pill">META 90 KG</span></div>
+  <div class="row" style="align-items:baseline"><span class="big" id="currentWeight">106,4</span><span class="muted">kg actuales</span></div>
+  <div class="progress"><span id="weightBar" style="width:0%"></span></div>
+  <div class="row between small muted"><span>Inicio: 106,4 kg</span><span id="lostLabel">0 kg perdidos</span></div>
+ </div>
+ <div class="grid">
+  <div class="metric"><span class="muted small">Calorías objetivo</span><strong>2.100 kcal</strong></div>
+  <div class="metric"><span class="muted small">Proteína objetivo</span><strong>150 g</strong></div>
+  <div class="metric"><span class="muted small">Carbohidratos</span><strong>210 g</strong></div>
+  <div class="metric"><span class="muted small">Grasas</span><strong>70 g</strong></div>
+ </div>
+ <div class="card"><h2>Registrar el día</h2>
+  <form id="dailyForm">
+   <div class="formgrid">
+    <div><label>Fecha</label><input type="date" id="date" required></div>
+    <div><label>Peso (kg)</label><input type="number" id="weight" step=".1" min="30" max="300" placeholder="106.4"></div>
+    <div><label>Calorías consumidas</label><input type="number" id="calories" min="0" placeholder="2100"></div>
+    <div><label>Proteína (g)</label><input type="number" id="protein" min="0" placeholder="150"></div>
+    <div><label>Agua (litros)</label><input type="number" id="water" step=".1" min="0" placeholder="2.0"></div>
+    <div><label>Pasos</label><input type="number" id="steps" min="0" placeholder="5000"></div>
+    <div><label>Carbohidratos (g)</label><input type="number" id="carbs" min="0" placeholder="210"></div>
+    <div><label>Grasas (g)</label><input type="number" id="fat" min="0" placeholder="70"></div>
+    <div><label>Entrenamiento</label><select id="training"><option>Descanso</option><option>Caminata</option><option>Fuerza A</option><option>Fuerza B</option><option>Fútbol</option><option>Otro</option></select></div>
+    <div><label>Minutos de actividad</label><input type="number" id="minutes" min="0" placeholder="30"></div>
+   </div>
+   <label>Medida de cintura (cm)</label><input type="number" id="waist" step=".1" min="30" placeholder="Opcional">
+   <label>Notas</label><textarea id="notes" placeholder="Energía, hambre, cómo te sentiste..."></textarea>
+   <button class="primary">Guardar registro</button>
+  </form>
+ </div>
+ <div class="card"><h2>Progreso de peso</h2><canvas id="weightChart" width="700" height="220"></canvas><p class="notice">Registra tu peso varias veces por semana en condiciones similares. Observa la tendencia, no un solo día.</p></div>
+</section>
+<section id="alimentacion">
+ <div class="card"><h2>Objetivos de alimentación</h2><div class="grid">
+ <div class="metric"><span class="muted small">Energía</span><strong>2.100 kcal</strong></div><div class="metric"><span class="muted small">Proteína</span><strong>150 g</strong></div><div class="metric"><span class="muted small">Carbohidratos</span><strong>210 g</strong></div><div class="metric"><span class="muted small">Grasas</span><strong>70 g</strong></div></div>
+ <hr><h3>Ideas de comidas</h3><div class="list">
+ <div class="entry"><strong>Desayuno</strong>2 huevos, pan integral (80 g), leche descremada (200 ml) y una fruta.</div>
+ <div class="entry"><strong>Almuerzo</strong>Pollo (180 g), arroz cocido (180 g), ensalada, aceite de oliva (10 g) y palta (40 g).</div>
+ <div class="entry"><strong>Colación</strong>Yogur alto en proteínas (170–200 g), plátano y nueces (10 g).</div>
+ <div class="entry"><strong>Cena</strong>Atún al agua (150 g), 2 huevos, papas cocidas (180 g) y verduras (200 g).</div></div>
+ <p class="notice">Las porciones son una guía. Revisa etiquetas y ajusta con un profesional; las calorías reales dependen de marcas y preparación. El miércoles de fútbol prioriza carbohidratos y líquidos antes y después del partido.</p>
+ </div>
+ <div class="card"><h2>Registro de comidas</h2><label>Fecha</label><input type="date" id="mealDate"><label>Comida</label><select id="mealType"><option>Desayuno</option><option>Almuerzo</option><option>Colación</option><option>Cena</option></select><label>Alimento y cantidad</label><input id="mealText" placeholder="Ej. arroz cocido 150 g"><label>Calorías estimadas (opcional)</label><input type="number" id="mealKcal"><button class="primary" id="addMeal" type="button">Agregar comida</button><div id="mealList" class="list" style="margin-top:12px"></div></div>
+</section>
+<section id="entrenamiento">
+ <div class="card"><h2>Tu semana de entrenamiento</h2><div class="list">
+ <div class="entry"><span class="pill">LUNES</span><strong>Caminata · 30 min</strong>Ritmo moderado y movilidad suave.</div>
+ <div class="entry"><span class="pill">MARTES</span><strong>Fuerza A · 25–35 min</strong>Sentadilla con mancuerna 2×10; remo 3×12; press de pecho en suelo 3×10; curl bíceps 2×12; press hombros 2×10.</div>
+ <div class="entry"><span class="pill">MIÉRCOLES</span><strong>Fútbol · 90 min</strong>Calentamiento 10–15 min, hidratación y recuperación.</div>
+ <div class="entry"><span class="pill">JUEVES</span><strong>Recuperación · 20 min</strong>Caminata suave o descanso si hay fatiga/dolor.</div>
+ <div class="entry"><span class="pill">VIERNES</span><strong>Fuerza B · 25–35 min</strong>Peso muerto rumano 2×10; remo 3×12; press pecho 3×10; elevaciones laterales 2×12; bíceps 2×12; tríceps 2×12.</div>
+ <div class="entry"><span class="pill">SÁBADO</span><strong>Caminata · 35–40 min</strong>Ritmo cómodo a moderado.</div>
+ <div class="entry"><span class="pill">DOMINGO</span><strong>Descanso</strong>Recuperación.</div></div>
+ <p class="notice">Empieza con cargas que controles técnicamente, sin llegar al fallo. Si hay dolor articular, mareos, dolor de pecho o falta de aire inusual, detente y busca orientación médica.</p></div>
+ <div class="card"><h2>Registrar entrenamiento</h2><label>Fecha</label><input type="date" id="workDate"><label>Actividad</label><select id="workType"><option>Caminata</option><option>Fuerza A</option><option>Fuerza B</option><option>Fútbol</option><option>Movilidad</option><option>Otro</option></select><div class="formgrid"><div><label>Duración (min)</label><input id="workMinutes" type="number" min="0"></div><div><label>Esfuerzo (1–10)</label><input id="effort" type="number" min="1" max="10"></div></div><label>Notas</label><input id="workNotes" placeholder="Ej. mancuernas de 5 kg"><button class="primary" id="addWork" type="button">Guardar entrenamiento</button><div id="workList" class="list" style="margin-top:12px"></div></div>
+</section>
+<section id="historial">
+ <div class="card"><h2>Historial diario</h2><div id="historyList" class="list"><p class="muted">Todavía no hay registros.</p></div></div>
+ <div class="card"><h2>Calendario de actividad</h2><label>Elegir mes</label><input type="month" id="monthPicker"><div id="calendar" class="grid" style="grid-template-columns:repeat(7,1fr);margin-top:12px"></div><p class="notice">Los días con registros aparecen resaltados.</p></div>
+ <div class="card"><h2>Respaldo de datos</h2><p class="notice">Tus registros se guardan en el almacenamiento local de este navegador. Exporta una copia regularmente para evitar perderlos si borras los datos del navegador o cambias de teléfono.</p><button class="secondary" id="export">Exportar copia JSON</button> <button class="secondary" id="importBtn">Importar copia JSON</button><input type="file" id="importFile" accept="application/json" hidden></div>
+</section>
+<section id="ajustes">
+ <div class="card"><h2>Tu perfil</h2><div class="grid"><div class="metric"><span class="muted small">Edad</span><strong>25 años</strong></div><div class="metric"><span class="muted small">Estatura</span><strong>169 cm</strong></div><div class="metric"><span class="muted small">Peso inicial</span><strong>106,4 kg</strong></div><div class="metric"><span class="muted small">Meta</span><strong>90 kg</strong></div></div><p class="notice">Objetivos iniciales orientativos: 2.100 kcal, 150 g proteína, 210 g carbohidratos y 70 g grasas. Se deben revisar según tendencia de peso, hambre, rendimiento y orientación profesional.</p></div>
+ <div class="card"><h2>Medidas corporales</h2><label>Fecha</label><input type="date" id="measureDate"><div class="formgrid"><div><label>Cintura (cm)</label><input type="number" id="measureWaist" step=".1"></div><div><label>Cadera (cm)</label><input type="number" id="measureHip" step=".1"></div><div><label>Pecho (cm)</label><input type="number" id="measureChest" step=".1"></div><div><label>Muslo (cm)</label><input type="number" id="measureThigh" step=".1"></div></div><button class="primary" id="addMeasure" type="button">Guardar medidas</button><div id="measureList" class="list" style="margin-top:12px"></div></div>
+</section>
+</main>
+<nav class="tabs">
+ <button class="active" data-tab="inicio"><b>⌂</b>Inicio</button><button data-tab="alimentacion"><b>◉</b>Comida</button><button data-tab="entrenamiento"><b>✦</b>Entreno</button><button data-tab="historial"><b>▦</b>Historial</button><button data-tab="ajustes"><b>⚙</b>Perfil</button>
+</nav>
+<script src="app.js"></script>
+</body></html>
+<script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));}</script>
